@@ -1,10 +1,12 @@
-var garden,rabbit,apple,orangeL,redL, greenl;
+var garden,rabbit, hitbox, apple,orangeL,redL, greenl;
 var gardenImg,rabbitImg,appleImg,orangeImg,redImg, greenimg, grassimg;
-var score = 0;
-var level = 1;
+var appleG, orangelG, greenlG, redlG;
+var score = 1;
+var highscore = 1;
+var gamestate = "play";
 
 function preload(){
-  gardenImg = loadImage("garden.png");
+  gardenImg = loadImage("garden_long_width&height.png");
   rabbitImg = loadImage("rabbit.png");
   appleImg = loadImage("apple.png");
   orangeImg = loadImage("orangeLeaf.png");
@@ -15,35 +17,51 @@ function preload(){
 
 
 function setup(){
+  createCanvas(windowWidth, windowHeight);
+  // Moving background
+  garden = createSprite(width/2, height/2);//200, 200
+  garden.addImage("gardenimg", gardenImg);
+
+  //creating boy running
+  rabbit = createSprite(width/2, windowHeight-60,20,20);//160, 340
+  rabbit.scale = 0.09;
+  rabbit.addImage("rabbitimg", rabbitImg);
+  //rabbit.debug = true;
+  hitbox = createSprite(width/2, 340, 20, 20);
+  hitbox.addImage("rabbitimg", rabbitImg);
+  hitbox.scale = 0.09;
+  hitbox.visible = false;
+  //hitbox.debug = true;
+  hitbox.setCollider("rectangle", 0, 160, 425, 855);
   
-  createCanvas(400,400);
-// Moving background
-garden=createSprite(200,200);
-garden.addImage(gardenImg);
+  edges = createEdgeSprites();
 
-
-//creating boy running
-rabbit = createSprite(160,340,20,20);
-rabbit.scale =0.09;
-rabbit.addImage(rabbitImg);
+  appleG = new Group();
+  redlG = new Group();
+  orangelG = new Group();
+  greenlG = new Group();
 }
 
 function draw() {
-  background(0);
+  background('lightgreen');
+  fill('gold');
+  stroke('green');
+  textSize(20);
+  text("Vidas: "+score, 10, 30);
+  text("Maior Vidas Ganhadas: "+highscore, 10, 55);
   
-  // boy moving on Xaxis with mouse'
-  rabbit.x = World.mouseX;
-  
-  edges= createEdgeSprites();
-  rabbit.collide(edges);
-
-  
-
- var select_sprites = Math.round(random(1,4));
- //console.log(select_sprites);
- //console.log(score);
-
-   if (frameCount % 50 == 0) {
+  //console.log(select_sprites);
+  var select_sprites = Math.round(random(1,4));
+  hitbox.x = rabbit.x;
+  hitbox.y = rabbit.y;
+ 
+  if(gamestate == "play"){
+    // boy moving on Xaxis with mouse'
+    rabbit.x = World.mouseX;
+    if(score > highscore){
+      highscore = score;
+    }
+  if (frameCount % 50 == 0) {
      if (select_sprites == 1) {
        createApples();
      } else if (select_sprites == 2) {
@@ -54,44 +72,104 @@ function draw() {
        createRed();
      }
    }
-drawSprites();
+  }
+  rabbit.collide(edges);
+  
+  if(hitbox.isTouching(redlG)){
+    score = score-1
+    redlG.destroyEach();
+  }
+  if(hitbox.isTouching(greenlG)){
+    score = score-1
+    greenlG.destroyEach();
+  }
+  if(hitbox.isTouching(orangelG)){
+    score = score-1
+    orangelG.destroyEach();
+  }
+  if(hitbox.isTouching(appleG)){
+    appleG.destroyEach();
+    score = score+1;
+  }
+  if(score < 1){
+    gamestate = "end";
+  }
+  if(gamestate == "end"){
+    fill('cyan');
+    stroke('green');
+    text("Clique/Toque Para Jogar De Novo!", width/2-150, height/2);
+    garden.visible = false;
+    rabbit.visible = false;
+    redlG.destroyEach();
+    greenlG.destroyEach();
+    appleG.destroyEach();
+    orangelG.destroyEach();
+    if(mousePressedOver(rabbit)
+    ||mousePressedOver(garden)
+    ||touches.length > 0){
+      touches = [];
+      reset();
+    }
+  }
+  
+ 
+ 
+  console.log("Vidas: "+score);
+  console.log("Maior Vidas Ganhadas: "+highscore);
+
+   
+  drawSprites();
 }
 
 function createApples() {
-apple = createSprite(random(50, 350),40, 10, 10);
+apple = createSprite(random(50, windowWidth-50),40, 10, 10);
 apple.addImage(appleImg);
 apple.scale=0.07;
 apple.velocityY = 3;
-apple.lifetime = 150;
+apple.lifetime = 350;
 apple.depth = rabbit.depth;
 rabbit.depth = rabbit.depth+1;
+appleG.add(apple);
 }
 
 function createOrange() {
-orangeL = createSprite(random(50, 350),40, 10, 10);
+orangeL = createSprite(random(50, windowWidth-50),40, 10, 10);
 orangeL.addImage(orangeImg);
 orangeL.scale=0.08;
 orangeL.velocityY = 3;
-orangeL.lifetime = 150;
+orangeL.lifetime = 350;
 orangeL.depth = rabbit.depth;
 rabbit.depth = rabbit.depth+1;
+orangelG.add(orangeL);
 }
 
 function createRed() {
-redL = createSprite(random(50, 350),40, 10, 10);
+redL = createSprite(random(50, windowWidth-50),40, 10, 10);
 redL.addImage(redImg);
 redL.scale=0.06;
 redL.velocityY = 3;
-redL.lifetime = 150;
+redL.lifetime = 350;
 redL.depth = rabbit.depth;
 rabbit.depth = rabbit.depth+1;
+redlG.add(redL);
 }
 function createGreen() {
-greenl = createSprite(random(50, 350),40, 10, 10);
+greenl = createSprite(random(50, windowWidth-50),40, 10, 10);
 greenl.addImage(greenimg);
 greenl.scale=0.06;
 greenl.velocityY = 3;
-greenl.lifetime = 150;
+greenl.lifetime = 350;
 greenl.depth = rabbit.depth;
 rabbit.depth = rabbit.depth+1;
+greenlG.add(greenl);
+}
+
+function reset(){
+  garden.visible = true;
+  rabbit.visible = true;
+  gamestate = "play";
+  rabbit.x = width/2;
+  rabbit.y = windowHeight/2-60;
+  score = 1;
+
 }
