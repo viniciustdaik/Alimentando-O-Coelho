@@ -169,7 +169,7 @@ function reset(){
   rabbit.visible = true;
   gamestate = "play";
   rabbit.x = width/2;
-  rabbit.y = windowHeight/2-60;
+  rabbit.y = windowHeight-60;
   score = 1;
 
 }
