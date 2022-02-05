@@ -6,7 +6,7 @@ var highscore = 1;
 var gamestate = "play";
 
 function preload(){
-  gardenImg = loadImage("garden_long_width&height.png");
+  gardenImg = loadImage("gardenog.png");
   rabbitImg = loadImage("rabbit.png");
   appleImg = loadImage("apple.png");
   orangeImg = loadImage("orangeLeaf.png");
@@ -19,8 +19,11 @@ function preload(){
 function setup(){
   createCanvas(windowWidth, windowHeight);
   // Moving background
-  garden = createSprite(width/2, height/2);//200, 200
-  garden.addImage("gardenimg", gardenImg);
+  garden = createSprite(width/2, height/2, windowWidth, windowHeight);
+  garden.visible = false;
+  //200, 200 //width/2, height, windowWidth, windowHeight
+  //garden.addImage("gardenimg", gardenImg);
+  
 
   //creating boy running
   rabbit = createSprite(width/2, windowHeight-60,20,20);//160, 340
@@ -44,6 +47,7 @@ function setup(){
 
 function draw() {
   background('lightgreen');
+  image(gardenImg, 0, 0, width, height);
   fill('gold');
   stroke('green');
   textSize(20);
@@ -98,7 +102,7 @@ function draw() {
     fill('cyan');
     stroke('green');
     text("Clique/Toque Para Jogar De Novo!", width/2-150, height/2);
-    garden.visible = false;
+    //garden.visible = false;
     rabbit.visible = false;
     redlG.destroyEach();
     greenlG.destroyEach();
@@ -165,7 +169,7 @@ greenlG.add(greenl);
 }
 
 function reset(){
-  garden.visible = true;
+  //garden.visible = true;
   rabbit.visible = true;
   gamestate = "play";
   rabbit.x = width/2;
