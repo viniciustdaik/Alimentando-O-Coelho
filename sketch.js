@@ -9,9 +9,9 @@ function preload(){
   gardenImg = loadImage("gardenog.png");
   rabbitImg = loadImage("rabbit.png");
   appleImg = loadImage("apple.png");
-  orangeImg = loadImage("orangeLeaf.png");
-  redImg = loadImage("redImage.png");
-  greenimg = loadImage("leaf.png");
+  orangeImg = loadImage("./leaves/orangeLeaf.png");
+  redImg = loadImage("./leaves/redImage.png");
+  greenimg = loadImage("./leaves/leaf.png");
   grassimg = loadImage("grass.png");
 }
 
