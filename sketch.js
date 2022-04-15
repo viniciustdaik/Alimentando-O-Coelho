@@ -1,4 +1,4 @@
-var garden,rabbit, hitbox, apple,orangeL,redL, greenl;
+var garden,rabbit, hitbox;//, apple,orangeL,redL, greenl;
 var gardenImg,rabbitImg,appleImg,orangeImg,redImg, greenimg, grassimg;
 var appleG, orangelG, greenlG, redlG;
 var score = 1;
@@ -80,20 +80,40 @@ function draw() {
   rabbit.collide(edges);
   
   if(hitbox.isTouching(redlG)){
-    score = score-1
-    redlG.destroyEach();
+    score = score - 1
+    for(var redL of redlG){
+      if(hitbox.isTouching(redL)){
+        redL.destroy();
+      }
+    }
+    //redlG.destroyEach();
   }
   if(hitbox.isTouching(greenlG)){
-    score = score-1
-    greenlG.destroyEach();
+    score = score - 1
+    for(var greenl of greenlG){
+      if(hitbox.isTouching(greenl)){
+        greenl.destroy();
+      }
+    }
+    //greenlG.destroyEach();
   }
   if(hitbox.isTouching(orangelG)){
-    score = score-1
-    orangelG.destroyEach();
+    score = score - 1
+    for(var orangeL of orangelG){
+      if(hitbox.isTouching(orangeL)){
+        orangeL.destroy();
+      }
+    }
+    //orangelG.destroyEach();
   }
   if(hitbox.isTouching(appleG)){
-    appleG.destroyEach();
-    score = score+1;
+    score = score + 1;
+    for(var apple of appleG){
+      if(hitbox.isTouching(apple)){
+        apple.destroy();
+      }
+    }
+    //appleG.destroyEach();
   }
   if(score < 1){
     gamestate = "end";
@@ -101,7 +121,11 @@ function draw() {
   if(gamestate == "end"){
     fill('cyan');
     stroke('green');
-    text("Clique/Toque Para Jogar De Novo!", width/2-150, height/2);
+    if(isMobile){
+      text("Toque Para Jogar De Novo!", width / 2 - 150, height / 2);
+    }else{
+      text("Clique Para Jogar De Novo!", width / 2 - 150, height / 2);
+    }
     //garden.visible = false;
     rabbit.visible = false;
     redlG.destroyEach();
@@ -126,46 +150,47 @@ function draw() {
 }
 
 function createApples() {
-apple = createSprite(random(50, windowWidth-50),40, 10, 10);
-apple.addImage(appleImg);
-apple.scale=0.07;
-apple.velocityY = 3;
-apple.lifetime = 650;
-apple.depth = rabbit.depth;
-rabbit.depth = rabbit.depth+1;
-appleG.add(apple);
+  var apple = createSprite(random(50, width - 50), 40, 10, 10);
+  apple.addImage(appleImg);
+  apple.scale = 0.07;
+  apple.velocityY = 3;
+  apple.lifetime = 650;
+  apple.depth = rabbit.depth;
+  rabbit.depth = rabbit.depth+1;
+  appleG.add(apple);
 }
 
 function createOrange() {
-orangeL = createSprite(random(50, windowWidth-50),40, 10, 10);
-orangeL.addImage(orangeImg);
-orangeL.scale=0.08;
-orangeL.velocityY = 3;
-orangeL.lifetime = 650;
-orangeL.depth = rabbit.depth;
-rabbit.depth = rabbit.depth+1;
-orangelG.add(orangeL);
+  var orangeL = createSprite(random(50, width - 50), 40, 10, 10);
+  orangeL.addImage(orangeImg);
+  orangeL.scale = 0.08;
+  orangeL.velocityY = 3;
+  orangeL.lifetime = 650;
+  orangeL.depth = rabbit.depth;
+  rabbit.depth = rabbit.depth+1;
+  orangelG.add(orangeL);
 }
 
 function createRed() {
-redL = createSprite(random(50, windowWidth-50),40, 10, 10);
-redL.addImage(redImg);
-redL.scale=0.06;
-redL.velocityY = 3;
-redL.lifetime = 650;
-redL.depth = rabbit.depth;
-rabbit.depth = rabbit.depth+1;
-redlG.add(redL);
+  var redL = createSprite(random(50, width - 50), 40, 10, 10);
+  redL.addImage(redImg);
+  redL.scale = 0.06;
+  redL.velocityY = 3;
+  redL.lifetime = 650;
+  redL.depth = rabbit.depth;
+  rabbit.depth = rabbit.depth+1;
+  redlG.add(redL);
 }
+
 function createGreen() {
-greenl = createSprite(random(50, windowWidth-50),40, 10, 10);
-greenl.addImage(greenimg);
-greenl.scale=0.06;
-greenl.velocityY = 3;
-greenl.lifetime = 650;
-greenl.depth = rabbit.depth;
-rabbit.depth = rabbit.depth+1;
-greenlG.add(greenl);
+  var greenl = createSprite(random(50, width - 50), 40, 10, 10);
+  greenl.addImage(greenimg);
+  greenl.scale = 0.06;
+  greenl.velocityY = 3;
+  greenl.lifetime = 650;
+  greenl.depth = rabbit.depth;
+  rabbit.depth = rabbit.depth+1;
+  greenlG.add(greenl);
 }
 
 function reset(){
@@ -177,3 +202,4 @@ function reset(){
   score = 1;
 
 }
+
