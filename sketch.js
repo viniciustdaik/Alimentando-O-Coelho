@@ -5,6 +5,8 @@ var score = 1;
 var highscore = 1;
 var gamestate = "play";
 
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 function preload(){
   gardenImg = loadImage("gardenog.png");
   rabbitImg = loadImage("rabbit.png");
@@ -14,7 +16,6 @@ function preload(){
   greenimg = loadImage("./leaves/leaf.png");
   grassimg = loadImage("grass.png");
 }
-
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
@@ -80,39 +81,43 @@ function draw() {
   rabbit.collide(edges);
   
   if(hitbox.isTouching(redlG)){
-    score = score - 1
+    /*score = score - 1
     for(var redL of redlG){
       if(hitbox.isTouching(redL)){
         redL.destroy();
       }
-    }
+    }*/
+    handleItem(redlG, "redL", false);
     //redlG.destroyEach();
   }
   if(hitbox.isTouching(greenlG)){
-    score = score - 1
+    /*score = score - 1
     for(var greenl of greenlG){
       if(hitbox.isTouching(greenl)){
         greenl.destroy();
       }
-    }
+    }*/
+    handleItem(greenlG, "greenl", false);
     //greenlG.destroyEach();
   }
   if(hitbox.isTouching(orangelG)){
-    score = score - 1
+    /*score = score - 1
     for(var orangeL of orangelG){
       if(hitbox.isTouching(orangeL)){
         orangeL.destroy();
       }
-    }
+    }*/
+    handleItem(orangelG, "orangeL", false);
     //orangelG.destroyEach();
   }
   if(hitbox.isTouching(appleG)){
-    score = score + 1;
+    /*score = score + 1;
     for(var apple of appleG){
       if(hitbox.isTouching(apple)){
         apple.destroy();
       }
-    }
+    }*/
+    handleItem(appleG, "apple", true);
     //appleG.destroyEach();
   }
   if(score < 1){
@@ -203,3 +208,17 @@ function reset(){
 
 }
 
+function handleItem(itemG, item, food){
+  for(var item of itemG){
+    if(hitbox.isTouching(item)){
+      item.destroy();
+    }
+  }
+
+  if(food == true){
+    score = score + 1;
+  }else{
+    score = score - 1;
+  }
+
+}
